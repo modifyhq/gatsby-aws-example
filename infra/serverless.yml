@@ -1,0 +1,120 @@
+service: gatsby-demo
+frameworkVersion: '2'
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  region: eu-west-1
+  iamRoleStatements:
+    - Effect: 'Allow'
+      Action:
+        - 'codebuild:StartBuild'
+      Resource:
+        - !GetAtt GatsbyDemoCodeBuildProject.Arn
+    - Effect: 'Allow'
+      Action:
+        - 'secretsmanager:GetSecretValue'
+      Resource:
+        - !Ref GatsbyDemoSecret
+
+plugins:
+  - serverless-webpack
+
+functions:
+  deploy:
+    handler: handler.deploy
+    description: Build and deploy gatsby demo
+    environment:
+      CODEBUILD_PROJECT: !Ref GatsbyDemoCodeBuildProject
+    events:
+      - http:
+          path: deploy
+          method: post
+          authorizer:
+            name: auth
+            identitySource: method.request.header.Authorization
+  auth:
+    handler: handler.auth
+    environment:
+      SECRET_ID: !Ref GatsbyDemoSecret
+
+resources:
+  Resources:
+    GatsbyDemoSecret:
+      Type: AWS::SecretsManager::Secret
+      Properties:
+        GenerateSecretString:
+          SecretStringTemplate: '{"username": "modify"}'
+          GenerateStringKey: "password"
+          ExcludePunctuation: true
+    GatewayResponse:
+      Type: AWS::ApiGateway::GatewayResponse
+      Properties:
+        ResponseParameters:
+          gatewayresponse.header.www-authenticate: "'Basic'"
+        ResponseType: UNAUTHORIZED
+        RestApiId:
+          Ref: ApiGatewayRestApi
+        StatusCode: '401'
+    GatsbyDemoBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        AccessControl: PublicRead
+        WebsiteConfiguration:
+          IndexDocument: index.html
+          ErrorDocument: 404.html
+      DeletionPolicy: Retain
+    GatsbyDemoCodebuildRole:
+      Type: AWS::IAM::Role
+      Properties:
+        AssumeRolePolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+            - Effect: Allow
+              Principal:
+                Service:
+                  - codebuild.amazonaws.com
+              Action:
+                - 'sts:AssumeRole'
+        Path: /
+        Policies:
+          - PolicyName: CodeBuildAccess
+            PolicyDocument:
+              Version: '2012-10-17'
+              Statement:
+                - Effect: Allow
+                  Action:
+                    - 'logs:CreateLogGroup'
+                    - 'logs:CreateLogStream'
+                    - 'logs:PutLogEvents'
+                  Resource:
+                    - 'arn:aws:logs:*:*:log-group:/aws/codebuild/*'
+                - Effect: Allow
+                  Action:
+                    - 's3:*'
+                  Resource:
+                    - !Join [ '', [ 'arn:aws:s3:::', !Ref GatsbyDemoBucket ] ]
+                    - !Join [ '', [ 'arn:aws:s3:::', !Ref GatsbyDemoBucket, '/*' ] ]
+    GatsbyDemoCodeBuildProject:
+      Type: AWS::CodeBuild::Project
+      Properties:
+        ServiceRole: !GetAtt GatsbyDemoCodebuildRole.Arn
+        Artifacts:
+          Type: NO_ARTIFACTS
+        Environment:
+          ComputeType: BUILD_GENERAL1_SMALL
+          Image: aws/codebuild/standard:4.0
+          Type: LINUX_CONTAINER
+          EnvironmentVariables:
+            - Name: BUCKET
+              Value: !Ref GatsbyDemoBucket
+        Source:
+          Location: https://github.com/healthforge/gatsby-demo.git
+          Type: GITHUB
+  Outputs:
+    BucketName:
+      Value: !Ref GatsbyDemoBucket
+    BucketURL:
+      Value: !GetAtt GatsbyDemoBucket.WebsiteURL
+    SecretARN:
+      Value: !Ref GatsbyDemoSecret

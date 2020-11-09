@@ -1,0 +1,14 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 12
+  build:
+    commands:
+      - cd blog
+      - npm install
+      - npm run modify
+      - npm run build
+      - npm run deploy
+      - npm run modify:notify

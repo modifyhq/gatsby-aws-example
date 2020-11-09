@@ -1,0 +1,14 @@
+{
+  "name": "gatsby-demo",
+  "version": "1.0.0",
+  "main": "handler.js",
+  "devDependencies": {
+    "aws-sdk": "^2.790.0",
+    "serverless": "^2.11.1",
+    "serverless-webpack": "^5.3.5",
+    "webpack": "^5.4.0"
+  },
+  "scripts": {
+    "deploy": "serverless deploy -v"
+  }
+}
