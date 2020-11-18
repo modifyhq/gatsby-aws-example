@@ -1,5 +1,8 @@
-service: gatsby-demo
+service: modify-gatsby-demo
 frameworkVersion: '2'
+
+custom:
+  githubRepository: ${env:GITHUB_REPOSITORY, 'healthforge/gatsby-demo'}
 
 provider:
   name: aws
@@ -109,7 +112,7 @@ resources:
             - Name: BUCKET
               Value: !Ref GatsbyDemoBucket
         Source:
-          Location: https://github.com/healthforge/gatsby-demo.git
+          Location: https://github.com/${self:custom.githubRepository}.git
           Type: GITHUB
   Outputs:
     BucketName:
