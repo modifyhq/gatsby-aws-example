@@ -40,12 +40,14 @@ to build and deploy the static site.
 ## Step 0 (Optional) - Fork the repository
 
 If you wish to make any modifications to this demo then you should fork the repository to your own
-Github account e.g. `my-org/modify-gatsby-demo`, otherwise you can run it directly.
+Github account e.g. `my-org/gatsby-demo`, otherwise you can run it directly.
 
 The repository URL is part of the stack configuration, so forking will require that you override an
-environment variable in [Step 2](#step-2---setup-your-infrastructure):
+environment variable before running [Step 2](#step-2---setup-your-infrastructure):
 
-`GITHUB_REPOSITORY=my-org/gatsby-demo`
+```bash
+export GITHUB_REPOSITORY=my-org/gatsby-demo
+```
 
 ## Step 1 - Setup Modify
 
@@ -76,15 +78,16 @@ Definition in [Step 3](#step-3---create-modify-job) to suit.
 
 ## Step 2 - Setup your infrastructure
 
-The following steps assume you have a working AWS configuration to which serverless can deploy the
-infrastructure stack.
+The following steps assume you have installed and configured the AWS CLI (https://aws.amazon.com/cli/).
 
-Deploy the serverless stack:
+Deploy the serverless stack to your configured AWS account:
 ```bash
 cd infra
 npm install
 npm run deploy
 ```
+
+Note: Only one copy of this stack can be deployed to a single AWS account.
 
 When complete, make a note of the following:
 - The website URL is shown in the output as `BucketURL`
@@ -99,26 +102,14 @@ When complete, make a note of the following:
 
 In Modify, select the correct team and workspace and go to the Jobs section.
 
-Click the `Create Job` button and enter the following:
+Click the `Create Job` button and and then select the `Tutorial: Publish Gatsby to AWS S3` template:
 
-- Name: `Gatsby Demo`
-- Target: `POST <API gateway deploy endpoint>`
-- Headers:
-    - `Accept`: `application/json`
-- Payload:
-    ```
-    {
-        "refreshToken":"{{REFRESH_TOKEN}}",
-        "jobInstanceId":"{{JOB_INSTANCE_ID}}",
-        "teamSlug": "my-team",
-        "workspaceSlug": "gatsby-demo",
-        "connectorSlug": "docs",
-        "workspaceBranchSlug": "master"
-    }
-    ```
+You will need to complete the following fields:
+
+- Target: `<API gateway deploy endpoint>`
 
 Next click `+` next to Credentials and enter the following:
-- Name: `Gatsby Demo`
+- Name: `Gatsby Tutorial`
 - Username: `modify`
 - Password: `<secret password>`
 
