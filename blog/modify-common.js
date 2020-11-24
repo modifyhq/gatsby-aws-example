@@ -6,10 +6,10 @@ export const config = {
   outputPath:  process.env.OUTPUT_PATH || "./modify-files.tar",
   refreshToken:  process.env.REFRESH_TOKEN,
   jobInstanceId:  process.env.JOB_INSTANCE_ID,
-  team:  process.env.TEAM,
-  workspace:  process.env.WORKSPACE,
-  workspaceBranch:  process.env.WORKSPACE_BRANCH || "master",
-  connector:  process.env.CONNECTOR || "docs",
+  teamSlug:  process.env.TEAM_SLUG,
+  workspaceSlug:  process.env.WORKSPACE_SLUG,
+  workspaceBranchSlug:  process.env.WORKSPACE_BRANCH_SLUG || "master",
+  connectorSlug:  process.env.CONNECTOR_SLUG || "docs",
   connectorPath:  process.env.CONNECTOR_PATH || "/gatsby/"
 }
 

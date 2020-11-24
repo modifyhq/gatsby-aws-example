@@ -14,10 +14,10 @@ import { config, getAccessToken } from "./modify-common";
   });
   const query = gql`
       {
-          team(slug: "${config.team}") {
-              workspace(slug: "${config.workspace}") {
-                  branch(slug: "${config.workspaceBranch}") {
-                      connectorBranch(connectorSlug: "${config.connector}") {
+          team(slug: "${config.teamSlug}") {
+              workspace(slug: "${config.workspaceSlug}") {
+                  branch(slug: "${config.workspaceBranchSlug}") {
+                      connectorBranch(connectorSlug: "${config.connectorSlug}") {
                           downloadTarballUrl(path: "${config.connectorPath}") {
                               value
                               error

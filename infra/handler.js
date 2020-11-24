@@ -7,13 +7,13 @@ const projectName = process.env.CODEBUILD_PROJECT;
 const secretId = process.env.SECRET_ID;
 
 export const deploy = async (event) => {
-  const { team, workspace, refreshToken, jobInstanceId } = JSON.parse(event.body);
+  const { teamSlug, workspaceSlug, refreshToken, jobInstanceId } = JSON.parse(event.body);
   return await cb.startBuild({
     projectName, environmentVariablesOverride: [
       { name: "REFRESH_TOKEN", value: refreshToken },
       { name: "JOB_INSTANCE_ID", value: jobInstanceId },
-      { name: "TEAM", value: team },
-      { name: "WORKSPACE", value: workspace }
+      { name: "TEAM_SLUG", value: teamSlug },
+      { name: "WORKSPACE_SLUG", value: workspaceSlug }
     ]
   }).promise()
     .then(() => {

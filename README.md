@@ -49,11 +49,11 @@ environment variable in [Step 2](#step-2---setup-your-infrastructure):
 
 ## Step 1 - Setup Modify
 
-The following steps assume you have a Modify team called `my-team`. 
+The following steps assume you have a Modify team with the slug `my-team`. 
 
-Create a new workspace called `gatsby-demo`.
+Create a new workspace with the slug `gatsby-demo`.
 
-Create a new connector in your workspace called `docs` with protected access mode.
+Create a new Modify connector in your workspace with the slug `docs` and protected access mode.
 
 Create a new workspace branch (e.g `develop`) in order to make changes.
 
@@ -110,10 +110,10 @@ Click the `Create Job` button and enter the following:
     {
         "refreshToken":"{{REFRESH_TOKEN}}",
         "jobInstanceId":"{{JOB_INSTANCE_ID}}",
-        "team": "my-team",
-        "workspace": "gatsby-demo",
-        "connector": "docs",
-        "workspaceBranch": "master"
+        "teamSlug": "my-team",
+        "workspaceSlug": "gatsby-demo",
+        "connectorSlug": "docs",
+        "workspaceBranchSlug": "master"
     }
     ```
 
