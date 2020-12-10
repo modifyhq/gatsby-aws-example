@@ -1,8 +1,8 @@
-service: modify-gatsby-demo
+service: modify-gatsby-example
 frameworkVersion: '2'
 
 custom:
-  githubRepository: ${env:GITHUB_REPOSITORY, 'modifyhq/gatsby-demo'}
+  githubRepository: ${env:GITHUB_REPOSITORY, 'modifyhq/gatsby-example'}
 
 provider:
   name: aws
