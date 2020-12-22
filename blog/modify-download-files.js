@@ -18,10 +18,7 @@ import { config, getAccessToken } from "./modify-common";
               workspace(slug: "${config.workspaceSlug}") {
                   branch(slug: "${config.workspaceBranchSlug}") {
                       connectorBranch(connectorSlug: "${config.connectorSlug}") {
-                          downloadTarballUrl(path: "${config.connectorPath}") {
-                              value
-                              error
-                          }
+                          downloadTarballUrl(path: "${config.connectorPath}")
                       }
                   }
               }
@@ -29,7 +26,7 @@ import { config, getAccessToken } from "./modify-common";
       }
   `;
   const downloadPath = await graphQLClient.request(query)
-    .then(data => data.team.workspace.branch.connectorBranch.downloadTarballUrl.value);
+    .then(data => data.team.workspace.branch.connectorBranch.downloadTarballUrl);
 
   // Download tarball
   const response = await fetch([config.modifyApiUrl, downloadPath].join(""), {

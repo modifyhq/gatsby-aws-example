@@ -1,8 +1,8 @@
-service: modify-gatsby-demo
+service: gatsby-aws-example
 frameworkVersion: '2'
 
 custom:
-  githubRepository: ${env:GITHUB_REPOSITORY, 'modifyhq/gatsby-example-job'}
+  githubRepository: ${env:GITHUB_REPOSITORY, 'modifyhq/gatsby-aws-example'}
 
 provider:
   name: aws
@@ -13,12 +13,12 @@ provider:
       Action:
         - 'codebuild:StartBuild'
       Resource:
-        - !GetAtt GatsbyDemoCodeBuildProject.Arn
+        - !GetAtt GatsbyAWSExampleCodeBuildProject.Arn
     - Effect: 'Allow'
       Action:
         - 'secretsmanager:GetSecretValue'
       Resource:
-        - !Ref GatsbyDemoSecret
+        - !Ref GatsbyAWSExampleSecret
 
 plugins:
   - serverless-webpack
@@ -26,9 +26,9 @@ plugins:
 functions:
   deploy:
     handler: handler.deploy
-    description: Build and deploy gatsby demo
+    description: Build and deploy gatsby aws example
     environment:
-      CODEBUILD_PROJECT: !Ref GatsbyDemoCodeBuildProject
+      CODEBUILD_PROJECT: !Ref GatsbyAWSExampleCodeBuildProject
     events:
       - http:
           path: deploy
@@ -39,11 +39,11 @@ functions:
   auth:
     handler: handler.auth
     environment:
-      SECRET_ID: !Ref GatsbyDemoSecret
+      SECRET_ID: !Ref GatsbyAWSExampleSecret
 
 resources:
   Resources:
-    GatsbyDemoSecret:
+    GatsbyAWSExampleSecret:
       Type: AWS::SecretsManager::Secret
       Properties:
         GenerateSecretString:
@@ -59,7 +59,7 @@ resources:
         RestApiId:
           Ref: ApiGatewayRestApi
         StatusCode: '401'
-    GatsbyDemoBucket:
+    GatsbyAWSExampleBucket:
       Type: AWS::S3::Bucket
       Properties:
         AccessControl: PublicRead
@@ -67,7 +67,7 @@ resources:
           IndexDocument: index.html
           ErrorDocument: 404.html
       DeletionPolicy: Retain
-    GatsbyDemoCodebuildRole:
+    GatsbyAWSExampleCodebuildRole:
       Type: AWS::IAM::Role
       Properties:
         AssumeRolePolicyDocument:
@@ -96,12 +96,12 @@ resources:
                   Action:
                     - 's3:*'
                   Resource:
-                    - !Join [ '', [ 'arn:aws:s3:::', !Ref GatsbyDemoBucket ] ]
-                    - !Join [ '', [ 'arn:aws:s3:::', !Ref GatsbyDemoBucket, '/*' ] ]
-    GatsbyDemoCodeBuildProject:
+                    - !Join [ '', [ 'arn:aws:s3:::', !Ref GatsbyAWSExampleBucket ] ]
+                    - !Join [ '', [ 'arn:aws:s3:::', !Ref GatsbyAWSExampleBucket, '/*' ] ]
+    GatsbyAWSExampleCodeBuildProject:
       Type: AWS::CodeBuild::Project
       Properties:
-        ServiceRole: !GetAtt GatsbyDemoCodebuildRole.Arn
+        ServiceRole: !GetAtt GatsbyAWSExampleCodebuildRole.Arn
         Artifacts:
           Type: NO_ARTIFACTS
         Environment:
@@ -110,14 +110,14 @@ resources:
           Type: LINUX_CONTAINER
           EnvironmentVariables:
             - Name: BUCKET
-              Value: !Ref GatsbyDemoBucket
+              Value: !Ref GatsbyAWSExampleBucket
         Source:
           Location: https://github.com/${self:custom.githubRepository}.git
           Type: GITHUB
   Outputs:
     BucketName:
-      Value: !Ref GatsbyDemoBucket
+      Value: !Ref GatsbyAWSExampleBucket
     BucketURL:
-      Value: !GetAtt GatsbyDemoBucket.WebsiteURL
+      Value: !GetAtt GatsbyAWSExampleBucket.WebsiteURL
     SecretARN:
-      Value: !Ref GatsbyDemoSecret
+      Value: !Ref GatsbyAWSExampleSecret
