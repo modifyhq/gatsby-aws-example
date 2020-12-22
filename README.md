@@ -1,7 +1,7 @@
-# Gatsby Demo
+# Gatsby Example Job
 
-This demo repository is intended to show how to publish Modify managed content to an AWS S3 static
-site using Gatsby.
+This example repository is intended to show how to define and run a job that publishes Modify managed 
+content to an AWS S3 static site, using Gatsby and AWS Serverless for the build.
 
 ## `blog`
 
@@ -39,21 +39,21 @@ to build and deploy the static site.
 
 ## Step 0 (Optional) - Fork the repository
 
-If you wish to make any modifications to this demo then you should fork the repository to your own
-Github account e.g. `my-org/gatsby-demo`, otherwise you can run it directly.
+If you wish to make any modifications to this example then you should fork the repository to your own
+Github account e.g. `my-org/gatsby-example-job`, otherwise you can run it directly.
 
 The repository URL is part of the stack configuration, so forking will require that you override an
 environment variable before running [Step 2](#step-2---setup-your-infrastructure):
 
 ```bash
-export GITHUB_REPOSITORY=my-org/gatsby-demo
+export GITHUB_REPOSITORY=my-org/gatsby-example-job
 ```
 
 ## Step 1 - Setup Modify
 
 The following steps assume you have a Modify team with the slug `my-team`. 
 
-Create a new workspace with the slug `gatsby-demo` and base branch ID `master`.
+Create a new workspace with the slug `gatsby-example-job` and base branch ID `master`.
 
 Create a new Modify connector in your workspace called `docs` with `Editable` access mode.
 
