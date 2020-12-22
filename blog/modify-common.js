@@ -1,7 +1,7 @@
 import fetch from "node-fetch";
 
 export const config = {
-  modifyApiUrl:  process.env.MODIFY_API_URL || "https://app.modifyhq.com",
+  modifyApiUrl:  process.env.MODIFY_API_URL || "https://api.modifyhq.com",
   modifyApiKey:  process.env.MODIFY_API_KEY || "AIzaSyAUmlhpu52XymA7IjSfeProj0mD_Zp6HI8",
   outputPath:  process.env.OUTPUT_PATH || "./modify-files.tar",
   refreshToken:  process.env.REFRESH_TOKEN,

@@ -1,4 +1,4 @@
-# Gatsby Example Job
+# Gatsby AWS Example
 
 This example repository is intended to show how to define and run a job that publishes Modify managed 
 content to an AWS S3 static site, using Gatsby and AWS Serverless for the build.
@@ -40,20 +40,20 @@ to build and deploy the static site.
 ## Step 0 (Optional) - Fork the repository
 
 If you wish to make any modifications to this example then you should fork the repository to your own
-Github account e.g. `my-org/gatsby-example-job`, otherwise you can run it directly.
+Github account e.g. `my-org/gatsby-aws-example`, otherwise you can run it directly.
 
 The repository URL is part of the stack configuration, so forking will require that you override an
 environment variable before running [Step 2](#step-2---setup-your-infrastructure):
 
 ```bash
-export GITHUB_REPOSITORY=my-org/gatsby-example-job
+export GITHUB_REPOSITORY=my-org/gatsby-aws-example
 ```
 
 ## Step 1 - Setup Modify
 
 The following steps assume you have a Modify team with the slug `my-team`. 
 
-Create a new workspace with the slug `gatsby-example-job` and base branch ID `master`.
+Create a new workspace with the slug `gatsby-aws-example` and base branch ID `master`.
 
 Create a new Modify connector in your workspace called `docs` with `Editable` access mode.
 
@@ -98,14 +98,14 @@ When complete, make a note of the following:
 
 In Modify, select the correct team and workspace and go to the Jobs section.
 
-Click the `Create Job` button and and then select the `Tutorial: Publish Gatsby to AWS S3` template:
+Click the `Create Job` button and and then select the `Example: Publish Gatsby to AWS S3` template:
 
 You will need to complete the following fields:
 
 - Target: `<API gateway deploy endpoint>`
 
 Next click `+` next to Credentials and enter the following:
-- Name: `Gatsby Tutorial`
+- Name: `Gatsby AWS Example`
 - Username: `modify`
 - Password: `<secret password>`
 
